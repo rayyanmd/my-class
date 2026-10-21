@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <main>{children}</main>
         <Toaster />
       </body>
     </html>

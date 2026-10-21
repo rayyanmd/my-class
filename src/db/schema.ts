@@ -1,4 +1,15 @@
-import { pgTable, text, timestamp, index, boolean } from "drizzle-orm/pg-core";
+import {
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  index,
+  boolean,
+  integer,
+} from "drizzle-orm/pg-core";
+
+// Auth
+export const roleEnum = pgEnum("role", ["user", "pj", "admin"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -6,6 +17,7 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  role: roleEnum("role").default("user").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -71,3 +83,26 @@ export const verification = pgTable(
   },
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
+
+// Assignment
+export const course = pgTable("course", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text(),
+});
+
+export const typeEnum = pgEnum("types", ["individual", "group"]);
+
+export const assignment = pgTable("assignment", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  title: text(),
+  courseId: integer("course_id"),
+  deadline: timestamp(),
+  type: typeEnum().default("individual"),
+  guide: text(),
+  submission: text(),
+  userDone: text("user_done").array().default([]).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});

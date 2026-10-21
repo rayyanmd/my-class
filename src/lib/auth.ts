@@ -10,6 +10,11 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 1,
   },
+  user: {
+    additionalFields: {
+      role: { type: "string", required: false, defaultValue: "user" },
+    },
+  },
   database: drizzleAdapter(db, {
     provider: "pg", // or "mysql", "sqlite"
     schema,
