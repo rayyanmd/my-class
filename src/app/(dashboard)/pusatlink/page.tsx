@@ -36,7 +36,7 @@ export default async function PusatLink() {
     <div className="space-y-4">
       <div className="flex w-full justify-between items-center">
         <div className="w-full">
-          <h1 className="text-2xl font-bold">Pusat Link SS23</h1>
+          <h1 className="text-2xl font-bold">Pusat Link</h1>
           <p className="text-sm text-muted-foreground">
             Link-link penting ada di sini
           </p>

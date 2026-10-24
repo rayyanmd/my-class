@@ -5,18 +5,13 @@ export default function TugasLoading() {
     <div className="space-y-4">
       <div className="flex w-full justify-between items-center">
         <div className="w-full">
-          <h1 className="text-2xl font-bold">Tumpukan Tugas SS23</h1>
+          <h1 className="text-2xl font-bold">Pusat Link</h1>
           <p className="text-sm text-muted-foreground">
-            jangan lupa dikerjain yaa :3
+            Link-link penting ada di sini
           </p>
         </div>
       </div>
-      <div className="flex space-x-2">
-        <Skeleton className="w-1/3 h-30" />
-        <Skeleton className="w-1/3 h-30" />
-        <Skeleton className="w-1/3 h-30" />
-      </div>
-      <Skeleton className="w-full h-100" />
+      <Skeleton className="w-full h-150" />
     </div>
   );
 }

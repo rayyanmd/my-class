@@ -5,7 +5,7 @@ export default function TugasLoading() {
     <div className="space-y-4">
       <div className="flex w-full justify-between items-center">
         <div className="w-full">
-          <h1 className="text-2xl font-bold">Tumpukan Tugas SS23</h1>
+          <h1 className="text-2xl font-bold">Tumpukan Tugas</h1>
           <p className="text-sm text-muted-foreground">
             jangan lupa dikerjain yaa :3
           </p>
