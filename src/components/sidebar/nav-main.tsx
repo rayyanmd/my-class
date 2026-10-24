@@ -10,9 +10,11 @@ import {
 import Link from "next/link";
 
 export function NavMain({
+  title,
   items,
   active,
 }: {
+  title?: string;
   items: {
     title: string;
     href: string;
@@ -22,7 +24,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>

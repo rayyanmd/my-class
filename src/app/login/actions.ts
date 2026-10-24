@@ -14,6 +14,7 @@ export async function login({
       email: username + "@ss23.fun",
       password,
     },
+    headers: await headers(),
     asResponse: true,
   });
 

@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Loading() {
+export default function TugasLoading() {
   return (
     <div className="space-y-4">
       <div className="flex w-full justify-between items-center">

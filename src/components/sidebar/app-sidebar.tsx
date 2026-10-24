@@ -14,7 +14,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
 
 export function AppSidebar({
   data,
@@ -24,8 +23,14 @@ export function AppSidebar({
     user: {
       name: string;
       nim: string;
+      role: string;
     };
     navMain: {
+      title: string;
+      href: string;
+      icon?: React.ReactNode;
+    }[];
+    navAdmin: {
       title: string;
       href: string;
       icon?: React.ReactNode;
@@ -49,6 +54,9 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} active={active} />
+        {data.user.role == "admin" && (
+          <NavMain title="Admin" items={data.navAdmin} active={active} />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

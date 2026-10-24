@@ -18,6 +18,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  if (
+    (pathname === "/admin" || pathname.startsWith("/admin/")) &&
+    session.user.role !== "admin"
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   return NextResponse.next();
 }
 

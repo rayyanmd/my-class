@@ -7,7 +7,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import React from "react";
 
 export default function MainSidebar({
   data,
@@ -17,19 +17,25 @@ export default function MainSidebar({
     user: {
       name: string;
       nim: string;
+      role: string;
     };
     navMain: {
       title: string;
       href: string;
       icon?: React.ReactNode;
     }[];
+    navAdmin: {
+      title: string;
+      href: string;
+      icon?: React.ReactNode;
+    }[];
   };
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
   const pathname = usePathname();
 
   const currentPage =
-    data.navMain.find(
+    [...data.navMain, ...data.navAdmin].find(
       (item) =>
         item.href === pathname ||
         (item.href !== "/" && pathname.startsWith(`${item.href}/`)),

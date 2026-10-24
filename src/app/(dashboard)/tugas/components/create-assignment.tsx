@@ -44,11 +44,8 @@ const formSchema = z.object({
   course: z.number().int().positive("Mata kuliah wajib dipilih"),
   deadline: z.string().min(1, "Batas waktu wajib diisi").datetime(),
   type: z.enum(["individual", "group"]),
-  guide: z.string().url("Link panduan harus berupa url").or(z.literal("")),
-  submission: z
-    .string()
-    .url("Link pengumpulan harus berupa url")
-    .or(z.literal("")),
+  guide: z.url("Link panduan harus berupa url").or(z.literal("")),
+  submission: z.url("Link pengumpulan harus berupa url").or(z.literal("")),
 });
 
 export function CreateAssignment({
