@@ -16,7 +16,6 @@ import Image from "next/image";
 import { login } from "./actions";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().regex(/^[A-Za-z]\d{10}$/, "NIM harus sesuai format"),
@@ -24,7 +23,6 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -38,8 +36,7 @@ export default function LoginPage() {
     onSubmit: async ({ value }) => {
       setLoading(true);
       const response = await login(value);
-      setLoading(false);
-      if (response) return router.refresh();
+      if (response) return window.location.reload();
       toast.error("NIM atau Passwordnya salah bang");
     },
   });

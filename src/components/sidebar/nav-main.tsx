@@ -6,6 +6,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 
@@ -22,6 +23,8 @@ export function NavMain({
   }[];
   active: string;
 }) {
+  const { isMobile, setOpenMobile } = useSidebar();
+
   return (
     <SidebarGroup>
       {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
@@ -30,6 +33,11 @@ export function NavMain({
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               isActive={active == item.title}
+              onClick={() => {
+                if (isMobile) {
+                  setOpenMobile(false);
+                }
+              }}
               render={<Link href={item.href} />}
             >
               {item.icon}
