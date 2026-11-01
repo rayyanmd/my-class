@@ -1,3 +1,4 @@
+import InstallPrompt from "@/components/install-prompt";
 import {
   Card,
   CardContent,
@@ -94,6 +95,7 @@ export default async function Dashboard() {
             Selamat datang, {session?.user.name}!
           </p>
         </div>
+        <InstallPrompt />
       </div>
       <div className="lg:flex space-x-4 space-y-4">
         <div className="w-full">

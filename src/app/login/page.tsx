@@ -91,6 +91,7 @@ export default function LoginPage() {
                               }
                               aria-invalid={isInvalid}
                               placeholder="M0403267067"
+                              autoCapitalize="characters"
                               autoComplete="off"
                             />
                             {isInvalid && (
@@ -151,7 +152,7 @@ export default function LoginPage() {
         <Image
           src="/assets/class-photo.jpg"
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5] dark:grayscale"
           fill
         />
       </div>
