@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 
@@ -28,6 +29,8 @@ export async function createUser(input: {
     },
     asResponse: true,
   });
+
+  revalidatePath("/admin/user");
 
   return response.ok;
 }

@@ -90,8 +90,7 @@ export async function createAssignment(input: CreateAssignmentInput) {
     submission: input.submission || null,
   });
 
-  revalidatePath("/admin");
-  revalidatePath("/");
+  revalidatePath("/tugas");
 }
 
 export async function editAssignment(input: EditAssignmentInput) {
@@ -164,8 +163,7 @@ export async function editAssignment(input: EditAssignmentInput) {
     })
     .where(eq(assignmentTable.id, input.id));
 
-  revalidatePath("/admin");
-  revalidatePath("/");
+  revalidatePath("/tugas");
 }
 
 export async function deleteAssignment(id: number) {
@@ -189,8 +187,7 @@ export async function deleteAssignment(id: number) {
 
   await db.delete(assignmentTable).where(eq(assignmentTable.id, id));
 
-  revalidatePath("/admin");
-  revalidatePath("/");
+  revalidatePath("/tugas");
 }
 
 export async function markDone(assignmentId: number) {

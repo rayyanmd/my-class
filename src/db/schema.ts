@@ -110,3 +110,15 @@ export const assignment = pgTable("assignment", {
     .defaultNow()
     .$onUpdate(() => new Date()),
 });
+
+// Link
+export const link = pgTable("link", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  title: text(),
+  courseId: integer("course_id"),
+  url: text(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});

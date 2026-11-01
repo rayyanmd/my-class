@@ -20,11 +20,20 @@ export const relations = defineRelations(schema, (r) => ({
     }),
   },
 
+  course: { assignemnt: r.many.assignment(), link: r.many.link() },
+
   // Assignment
-  course: { assignemnt: r.many.assignment() },
   assignment: {
     course: r.one.course({
       from: r.assignment.courseId,
+      to: r.course.id,
+    }),
+  },
+
+  // Link
+  link: {
+    course: r.one.course({
+      from: r.link.courseId,
       to: r.course.id,
     }),
   },

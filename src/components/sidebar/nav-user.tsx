@@ -1,5 +1,5 @@
 "use client";
-import { logout } from "@/app/(dashboard)/actions";
+import { logout } from "@/app/(app)/actions";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
