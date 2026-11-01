@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import UserList from "./components/user-list";
 import CreateUser from "./components/create-user";
+import ImportUsers from "./components/import-users";
 
 export default async function User() {
   const users = await db.query.user.findMany({
@@ -25,7 +26,10 @@ export default async function User() {
             List orang-orangan SS23
           </p>
         </div>
-        <CreateUser />
+        <div className="flex gap-2">
+          <ImportUsers />
+          <CreateUser />
+        </div>
       </div>
 
       <UserList users={usersWithLastSession} />
