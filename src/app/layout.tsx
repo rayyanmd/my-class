@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SS23's workshop",
   description: "Aplikasi yang sangat keren untuk kelas SS23",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" }, // PWA status bar in light mode
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" }, // PWA status bar in dark mode
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

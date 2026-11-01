@@ -23,6 +23,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 export function NavUser({ user }: { user: { name: string; nim: string } }) {
   const { isMobile } = useSidebar();
@@ -34,6 +35,24 @@ export function NavUser({ user }: { user: { name: string; nim: string } }) {
       ? nameParts[0][0] + nameParts[nameParts.length - 1][0]
       : nameParts[0].slice(0, 2)
   ).toUpperCase();
+
+  useEffect(() => {
+    let metaTag = document.querySelector(
+      'meta[name="theme-color"]:not([media])',
+    );
+
+    if (!metaTag) {
+      metaTag = document.createElement("meta");
+      metaTag.setAttribute("name", "theme-color");
+      document.head.appendChild(metaTag);
+    }
+
+    if (resolvedTheme === "dark") {
+      metaTag.setAttribute("content", "#0f172a");
+    } else {
+      metaTag.setAttribute("content", "#ffffff");
+    }
+  }, [resolvedTheme]);
 
   return (
     <SidebarMenu>
