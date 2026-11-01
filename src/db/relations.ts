@@ -20,7 +20,11 @@ export const relations = defineRelations(schema, (r) => ({
     }),
   },
 
-  course: { assignemnt: r.many.assignment(), link: r.many.link() },
+  course: {
+    assignemnt: r.many.assignment(),
+    link: r.many.link(),
+    schedule: r.many.schedule(),
+  },
 
   // Assignment
   assignment: {
@@ -34,6 +38,13 @@ export const relations = defineRelations(schema, (r) => ({
   link: {
     course: r.one.course({
       from: r.link.courseId,
+      to: r.course.id,
+    }),
+  },
+
+  schedule: {
+    course: r.one.course({
+      from: r.schedule.courseId,
       to: r.course.id,
     }),
   },

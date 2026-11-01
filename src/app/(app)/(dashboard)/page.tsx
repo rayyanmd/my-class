@@ -13,25 +13,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { assignment, course } from "@/db/schema";
+import { assignment, course, schedule } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatDeadline } from "@/lib/utils";
-import { eq, gte } from "drizzle-orm";
+import { asc, eq, gte } from "drizzle-orm";
 import {
   ClockIcon,
   CheckIcon,
   PercentCircleIcon,
   CalendarIcon,
   BookAIcon,
-  MegaphoneIcon,
 } from "lucide-react";
 import { headers } from "next/headers";
+import { connection } from "next/server";
 
 export default async function Dashboard() {
+  await connection();
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  const today = new Date();
+  const weekday = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: "Asia/Jakarta",
+  }).format(today);
+  const dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(
+    weekday,
+  );
+  const todayLabel = new Intl.DateTimeFormat("id-ID", {
+    dateStyle: "full",
+    timeZone: "Asia/Jakarta",
+  }).format(today);
 
   const assignments = await db
     .select({
@@ -46,8 +61,22 @@ export default async function Dashboard() {
     .orderBy(assignment.deadline)
     .innerJoin(course, eq(assignment.courseId, course.id));
 
+  const todaySchedule = await db
+    .select({
+      timeStart: schedule.timeStart,
+      timeEnd: schedule.timeEnd,
+      course: course.name,
+      practicum: schedule.practicum,
+      room: schedule.room,
+    })
+    .from(schedule)
+    .innerJoin(course, eq(schedule.courseId, course.id))
+    .where(eq(schedule.dayOfWeek, dayOfWeek))
+    .orderBy(asc(schedule.timeStart));
+
+  const userId = session?.user.id;
   const completedAssignments = assignments
-    .filter((assignment) => assignment.userDone.includes(session?.user.id!))
+    .filter((assignment) => userId && assignment.userDone.includes(userId))
     .map((assignment) => assignment.id);
 
   const sortedAssignments = [...assignments].sort(
@@ -128,7 +157,7 @@ export default async function Dashboard() {
                 <CalendarIcon className="mr-2 shrink-0" />
                 <span>Jadwal Hari Ini</span>
               </CardTitle>
-              <CardDescription>Senin, 26 Oktober 2026</CardDescription>
+              <CardDescription>{todayLabel}</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -140,11 +169,31 @@ export default async function Dashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>10:00-11:40</TableCell>
-                    <TableCell>Agama Islam</TableCell>
-                    <TableCell>RK. CCR 2.06</TableCell>
-                  </TableRow>
+                  {todaySchedule.length > 0 ? (
+                    todaySchedule.map((item, index) => (
+                      <TableRow
+                        key={`${item.timeStart}-${item.course}-${index}`}
+                      >
+                        <TableCell>
+                          {item.timeStart?.slice(0, 5)}-
+                          {item.timeEnd?.slice(0, 5)}
+                        </TableCell>
+                        <TableCell>
+                          {item.course} ({item.practicum ? "R" : "K"})
+                        </TableCell>
+                        <TableCell>{item.room}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={3}
+                        className="text-center text-muted-foreground"
+                      >
+                        selamat libur bos
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

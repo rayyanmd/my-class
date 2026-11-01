@@ -6,6 +6,7 @@ import {
   index,
   boolean,
   integer,
+  time,
 } from "drizzle-orm/pg-core";
 
 // Auth
@@ -121,4 +122,15 @@ export const link = pgTable("link", {
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),
+});
+
+// Schedule
+export const schedule = pgTable("schedule", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  dayOfWeek: integer("day_of_week"),
+  timeStart: time(),
+  timeEnd: time(),
+  courseId: integer("course_id"),
+  practicum: boolean(),
+  room: text(),
 });
