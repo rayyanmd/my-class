@@ -34,3 +34,29 @@ export function formatDeadline(deadline: Date | null) {
 
   return date;
 }
+
+const majors = {
+  H14: "Ekonomi Pemabngunan",
+  H24: "Manajemen",
+  H34: "Agribisnis",
+  H44: "Ekonomi Sumberdaya dan Lingkungan",
+  H54: "Ilmu Ekonomi Syariah",
+  M0401: "Statistika dan Sains Data",
+  M0402: "Matematika",
+  M0403: "Ilmu Komputer",
+  M0404: "Aktuaria",
+  M0405: "Kecerdasan Buatan",
+};
+
+export function getMajor(nim: string) {
+  const majorCode = Object.keys(majors).find((code) => nim.startsWith(code));
+
+  return {
+    faculty: nim.startsWith("M")
+      ? "Sekolah Sains Data, Matematika, dan Informatika"
+      : nim.startsWith("H")
+        ? "Fakultas Eknomi dan Manajemen"
+        : undefined,
+    major: majorCode ? majors[majorCode as keyof typeof majors] : undefined,
+  };
+}

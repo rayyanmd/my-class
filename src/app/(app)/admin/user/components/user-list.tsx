@@ -32,6 +32,7 @@ import {
 import { deleteUser } from "../actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getMajor } from "@/lib/utils";
 
 export default function UserList({
   users,
@@ -115,91 +116,92 @@ export default function UserList({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.email.split("@")[0].toUpperCase()}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>
-                {user.email.toLowerCase().startsWith("m")
-                  ? "Sekolah Sains Data, Matematika, dan Informatika"
-                  : "Fakultas Ekonomi dan Manajemen"}
-              </TableCell>
-              <TableCell>Ilmu Komputer</TableCell>
-              <TableCell>{user.role}</TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={
-                      <Button variant="ghost" size="icon" className="size-8">
-                        <MoreHorizontalIcon />
-                        <span className="sr-only">Open menu</span>
-                      </Button>
-                    }
-                  />
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onClick={async () => {
-                          if (!user.lastSession?.ipAddress)
-                            return toast.error(
-                              "IP Address user tidak ditemukan",
+          {users.map((user) => {
+            const nim = user.email.split("@")[0].toUpperCase();
+            const major = getMajor(nim);
+
+            return (
+              <TableRow key={user.id}>
+                <TableCell>{nim}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{major.faculty}</TableCell>
+                <TableCell>{major.major}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <MoreHorizontalIcon />
+                          <span className="sr-only">Open menu</span>
+                        </Button>
+                      }
+                    />
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          onClick={async () => {
+                            if (!user.lastSession?.ipAddress)
+                              return toast.error(
+                                "IP Address user tidak ditemukan",
+                              );
+                            await navigator.clipboard.writeText(
+                              user.lastSession.ipAddress,
                             );
-                          await navigator.clipboard.writeText(
-                            user.lastSession.ipAddress,
-                          );
-                          toast.success("IP Address berhasil disalin");
-                        }}
-                      >
-                        Copy IP Address Terakhir
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={async () => {
-                          if (!user.lastSession?.userAgent)
-                            return toast.error(
-                              "User Agent user tidak ditemukan",
+                            toast.success("IP Address berhasil disalin");
+                          }}
+                        >
+                          Copy IP Address Terakhir
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={async () => {
+                            if (!user.lastSession?.userAgent)
+                              return toast.error(
+                                "User Agent user tidak ditemukan",
+                              );
+                            await navigator.clipboard.writeText(
+                              user.lastSession.userAgent,
                             );
-                          await navigator.clipboard.writeText(
-                            user.lastSession.userAgent,
-                          );
-                          toast.success("User Agent berhasil disalin");
-                        }}
-                      >
-                        Copy User Agent Terakhir
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setUser({
-                            id: user.id,
-                            username: user.email.split("@")[0].toUpperCase(),
-                            name: user.name,
-                          });
-                          setIsEditing(true);
-                        }}
-                      >
-                        Ubah
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        variant="destructive"
-                        onClick={() => {
-                          setUser({
-                            id: user.id,
-                            username: user.email.split("@")[0].toUpperCase(),
-                            name: user.name,
-                          });
-                          setIsDeleting(true);
-                        }}
-                      >
-                        Hapus
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
+                            toast.success("User Agent berhasil disalin");
+                          }}
+                        >
+                          Copy User Agent Terakhir
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setUser({
+                              id: user.id,
+                              username: user.email.split("@")[0].toUpperCase(),
+                              name: user.name,
+                            });
+                            setIsEditing(true);
+                          }}
+                        >
+                          Ubah
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          variant="destructive"
+                          onClick={() => {
+                            setUser({
+                              id: user.id,
+                              username: user.email.split("@")[0].toUpperCase(),
+                              name: user.name,
+                            });
+                            setIsDeleting(true);
+                          }}
+                        >
+                          Hapus
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
