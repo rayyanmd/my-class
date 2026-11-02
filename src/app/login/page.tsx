@@ -37,6 +37,7 @@ export default function LoginPage() {
       setLoading(true);
       const response = await login(value);
       if (response) return window.location.reload();
+      setLoading(false);
       toast.error("NIM atau Passwordnya salah bang");
     },
   });
